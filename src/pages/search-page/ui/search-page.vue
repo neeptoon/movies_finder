@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {SearchForm} from '../../../widgets/search-form'
+import { Movie } from '@/widgets/search-form/ui/search-form.vue';
+import {SearchForm} from '@/widgets/search-form'
 import {ref} from 'vue';
-import { Movie } from '../../../widgets/search-form/ui/search-form.vue';
 
 function searchHandler(data?: Movie[]): void {
     if (data) {
