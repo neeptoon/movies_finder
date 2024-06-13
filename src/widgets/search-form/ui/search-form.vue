@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus/es/components/form';
-import { Search } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue';
+import { OMDBAgent } from '@/shared/api';
 
-export type Fields = Partial<{
-  title: string,
-}>
+export type Fields = {
+  title?: string,
+}
 
 const formValue=ref<Fields>({});
 
@@ -19,6 +20,8 @@ const rules = reactive<FormRules<string>>({
 })
 
 const searchResult= ref<Movie[]>()
+
+const agent = new OMDBAgent();
 
 export type Movie = {
     Title: string,
@@ -34,20 +37,26 @@ type Emits = {
 
 const emits = defineEmits<Emits>();
 
+onMounted(() => {
+  agent.getMovies('terminator');
+  agent.getFullMovieInfo('tt0364056')
+})
+
 const fetcher = async ({title}: Fields): Promise<void> =>
-  await fetch(`http://www.omdbapi.com/?apikey=136a527&s=${title}`).then(async (response) => {
-    const data = await response.json()
-    searchResult.value = data.Search;
-    emits('search', searchResult.value);
-  }
-  );
+  {
+    if (title) {
+      const moviesList = await agent.getMovies(title);
+      searchResult.value = (await agent.getMovies(title)).data.Search;
+      console.log(moviesList, 'moviesList');
+      emits('search', searchResult.value)
+    }
+};
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!', formValue.value)
-      fetcher(formValue.value);
+      if (formValue.value) fetcher(formValue.value);
 
     } else {
       console.log('error submit!', fields)
