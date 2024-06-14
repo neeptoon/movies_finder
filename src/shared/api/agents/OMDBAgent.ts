@@ -1,3 +1,4 @@
+import { MOVIE_TYPE, MovieDTO } from '@/entities/movie';
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
 
 interface AgentInterface {
@@ -12,14 +13,15 @@ export class OMDBAgent implements AgentInterface {
         }
     });
 
-    getMovies(title: string): Promise<AxiosResponse> {
+    getMovies(title: string, type?: MOVIE_TYPE): Promise<AxiosResponse<{Search: MovieDTO[], totalResults: string, Response: string}>> {
         const params = {
-            s: title
+            s: title,
+            type,
         }
         return this.http.get("", {params})
     }
 
-    getFullMovieInfo(id: string): Promise<AxiosResponse> {
+    getFullMovieInfo(id: string): Promise<AxiosResponse<{Search: MovieDTO[], totalResults: string, Response: string}>> {
         const params = {
             i: id,
             plot: 'full'

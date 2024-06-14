@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { Movie } from '@/widgets/search-form/ui/search-form.vue';
-import {SearchForm} from '@/widgets/search-form'
-import {ref} from 'vue';
+import { type Movie, MovieCard } from '@/entities/movie';
+import {MoviesSearchForm} from '@/entities/movies-search-form';
+import { isEmpty } from 'element-plus/es/utils/index.mjs';
+import {computed, ref} from 'vue';
+
+const searchResult = ref<Movie[]>([])
+
+const showSearchResult = computed<boolean>(() => !isEmpty(searchResult.value))
 
 function searchHandler(data?: Movie[]): void {
     if (data) {
@@ -9,45 +14,39 @@ function searchHandler(data?: Movie[]): void {
     }
 }
 
-const searchResult = ref<Movie[]>([])
+function handleClear() {
+    searchResult.value = []
+}
+
+
 </script>
 <template>
-    <el-row class="search-form">
+    <el-row justify="center" gutter="5">
         <el-col>
-            <search-form @search="searchHandler"/>
+            <h1>Поиск фильмов по названию</h1>
+        </el-col>
+        <el-col>
+            <movies-search-form @search="searchHandler"/>
         </el-col>
     </el-row>
 
-
-    <div>
-        <h1>Результаты поиска</h1>
-        <el-row :gutter="20">
-            <el-col v-for="movie in searchResult" :xs="2" :sm="4" :md="4" :lg="6" :xl="6">
-                <el-card shadow="hover">
-                    <template #header>{{ movie.Title }}</template>
-                        <el-image
-                            :src="movie.Poster"
-                        />
-                    <template #footer>{{ movie.Type }}</template>
-                </el-card>
-            </el-col>
-        </el-row>
-    </div>
+    <el-row v-if="showSearchResult" gutter="15">
+        <el-col>
+            <h1>Результаты поиска</h1>
+        </el-col>
+        <el-col v-for="movie in searchResult" :xs="2" :sm="4" :md="4" :lg="6" :xl="6">
+            <movie-card :movie="movie"/>
+        </el-col>
+        <el-col>
+            <el-button type="primary" @click="handleClear">Очистить результаты поиска</el-button>
+        </el-col>
+    </el-row>
 
 </template>
 
 <style scoped>
-    .search-form {
-        width: 600px;
-    }
     .el-col {
-        margin: 0 0 20px;
+        margin-bottom: 20px;
     }
-    .el-image {
-        width: 100%;
-        aspect-ratio: 0.75;
-    }
-    .el-card {
-        height: 100%;
-    }
+
 </style>
