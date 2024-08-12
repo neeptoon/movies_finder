@@ -1,3 +1,3 @@
-import SearchPage from './search-page.vue'
+import SearchPage from './search-page.vue';
 
 export {SearchPage};

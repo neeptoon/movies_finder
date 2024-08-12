@@ -1,3 +1,3 @@
-import MoviesSearchForm from './movies-search-form.vue'
+import MoviesSearchForm from './movies-search-form.vue';
 
-export {MoviesSearchForm}
+export {MoviesSearchForm};

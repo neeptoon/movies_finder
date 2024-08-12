@@ -1,4 +1,4 @@
-import { MOVIE_TYPE } from "@/entities/movie/model"
+import { MOVIE_TYPE } from "@/entities/movie/model";
 
 export type MoviesSearchFormValues = {
     title?: string,
