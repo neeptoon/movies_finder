@@ -1,4 +1,4 @@
-import { Movie, MovieDTO } from "../model";
+import { Movie, MovieDTO } from "@/entities/movie/model";
 
 export class MovieAdapter {
 
@@ -9,6 +9,6 @@ export class MovieAdapter {
             title: movie.Title,
             type: movie.Type,
             year: movie.Year,
-        }
+        };
     }
 }

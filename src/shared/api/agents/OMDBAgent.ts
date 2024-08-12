@@ -17,15 +17,15 @@ export class OMDBAgent implements AgentInterface {
         const params = {
             s: title,
             type,
-        }
-        return this.http.get("", {params})
+        };
+        return this.http.get("", {params});
     }
 
     getFullMovieInfo(id: string): Promise<AxiosResponse<{Search: MovieDTO[], totalResults: string, Response: string}>> {
         const params = {
             i: id,
             plot: 'full'
-        }
-        return this.http.get("", {params})
+        };
+        return this.http.get("", {params});
     }
 }

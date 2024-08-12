@@ -1,1 +1,1 @@
-export * from './movie.adapter'
+export * from './movie.adapter';
